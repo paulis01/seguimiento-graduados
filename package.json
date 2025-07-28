@@ -1,6 +1,7 @@
 {
   "name": "seguimiento-graduados",
   "version": "0.0.0",
+  "homepage": "https://paulis01.github.io/seguimiento-graduados",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

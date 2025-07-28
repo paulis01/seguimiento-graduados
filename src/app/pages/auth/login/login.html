@@ -1,0 +1,78 @@
+<div class="min-vh-100 d-flex flex-column justify-content-between bg-light">
+  <div class="topbar">
+    <a
+      class="btn btn-outline-light btn-sm"
+      href="https://www.uleam.edu.ec/"
+      target="_blank"
+    >
+      Sitio de la ULEAM
+    </a>
+  </div>
+
+  <main class="flex-fill d-flex justify-content-center align-items-center py-5">
+    <div class="card shadow rounded p-4" style="max-width: 450px; width: 100%">
+      <div class="text-center mb-4">
+        <img
+          src="/assets/images/LOGO.png"
+          alt="Logo ULEAM"
+          class="img-fluid"
+          style="max-height: 100px"
+        />
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="usuario"
+            formControlName="usuario"
+            placeholder="Ingrese su usuario"
+          />
+          <div
+            *ngIf="
+              loginForm.get('usuario')?.touched &&
+              loginForm.get('usuario')?.invalid
+            "
+            class="text-danger small"
+          >
+            Usuario es obligatorio.
+          </div>
+        </div>
+
+        <div class="mb-3">
+
+          <input
+            type="password"
+            class="form-control"
+            id="contrasena"
+            formControlName="contrasena"
+            placeholder="Ingrese su contraseña"
+          />
+          <div
+            *ngIf="
+              loginForm.get('contrasena')?.touched &&
+              loginForm.get('contrasena')?.invalid
+            "
+            class="text-danger small"
+          >
+            Contraseña es obligatoria.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          Iniciar sesión
+        </button>
+
+        <div class="text-center mt-3">
+          <a routerLink="/usuario/recuperar-contrasena"
+            >¿Olvidó su contraseña?</a
+          ><br />
+          <span>¿No tienes cuenta?</span>
+          <a routerLink="/usuario/registro"> Regístrate aquí</a>
+        </div>
+      </form>
+    </div>
+  </main>
+
+</div>

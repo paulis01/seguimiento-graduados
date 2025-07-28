@@ -1,0 +1,124 @@
+<div class="min-vh-100 d-flex flex-column bg-light">
+  <!-- Topbar -->
+  <div class="bg-dark text-end p-2">
+    <button class="btn btn-outline-light btn-sm" (click)="cerrarSesion()">
+      Cerrar sesión
+    </button>
+  </div>
+
+  <!-- Contenido principal -->
+  <div class="container my-5">
+    <div class="text-center mb-4">
+      <h1 class="fw-bold">Panel de Administración</h1>
+      <p class="text-muted">Gestiona encuestas y usuarios registrados.</p>
+    </div>
+
+    <!-- Opciones del administrador -->
+    <div class="d-flex flex-wrap justify-content-center gap-3 mb-5">
+      <a routerLink="/admin/admin-encuesta" class="btn btn-primary"
+        >Gestionar Encuestas</a
+      >
+      <a routerLink="/admin/registro-estudiantes" class="btn btn-success"
+        >Registrar Usuarios</a
+      >
+      <a routerLink="/admin/encuestas" class="btn btn-info text-white"
+        >Encuestas Contestadas</a
+      >
+    </div>
+
+    <!-- Título de tabla -->
+    <h2 class="h4 mb-3">Usuarios Registrados</h2>
+
+    <!-- Filtro -->
+    <div class="mb-4">
+      <input
+        [(ngModel)]="filtro"
+        (input)="aplicarFiltro()"
+        class="form-control"
+        placeholder="Buscar por nombre o usuario"
+      />
+    </div>
+
+    <!-- Tabla de usuarios -->
+    <div *ngIf="usuariosFiltrados.length > 0; else sinUsuarios">
+      <div class="table-responsive">
+        <table
+          class="table table-bordered table-hover align-middle text-center"
+        >
+          <thead class="table">
+            <tr>
+              <th
+                (click)="ordenarPor('nombre')"
+                (keydown)="ordenarPor('nombre')"
+              >
+                Nombre
+                <span *ngIf="ordenActual === 'nombre'">{{
+                  ascendente ? "↑" : "↓"
+                }}</span>
+              </th>
+              <th
+                (click)="ordenarPor('usuario')"
+                (keydown)="ordenarPor('usuario')"
+              >
+                Usuario
+                <span *ngIf="ordenActual === 'usuario'">{{
+                  ascendente ? "↑" : "↓"
+                }}</span>
+              </th>
+              <th
+                (click)="ordenarPor('cedula')"
+                (keydown)="ordenarPor('cedula')"
+              >
+                Cédula
+                <span *ngIf="ordenActual === 'cedula'">{{
+                  ascendente ? "↑" : "↓"
+                }}</span>
+              </th>
+              <th
+                (click)="ordenarPor('carrera')"
+                (keydown)="ordenarPor('carrera')"
+              >
+                Carrera
+                <span *ngIf="ordenActual === 'carrera'">{{
+                  ascendente ? "↑" : "↓"
+                }}</span>
+              </th>
+              <th
+                (click)="ordenarPor('fecha_graduacion')"
+                (keydown)="ordenarPor('fecha_graduacion')"
+              >
+                Fecha Graduación
+                <span *ngIf="ordenActual === 'fecha_graduacion'">{{
+                  ascendente ? "↑" : "↓"
+                }}</span>
+              </th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let u of usuariosFiltrados">
+              <td>{{ u.nombre }}</td>
+              <td>{{ u.usuario }}</td>
+              <td>{{ u.cedula }}</td>
+              <td>{{ u.carrera }}</td>
+              <td>{{ u.fecha_graduacion }}</td>
+              <td>
+                <button
+                  class="btn btn-danger btn-sm"
+                  (click)="eliminarUsuario(u.usuario)"
+                >
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- No hay usuarios -->
+    <ng-template #sinUsuarios>
+      <p class="text-center text-muted">No hay usuarios registrados.</p>
+    </ng-template>
+  </div>
+</div>

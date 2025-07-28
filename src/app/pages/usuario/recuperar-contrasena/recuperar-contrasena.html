@@ -1,0 +1,83 @@
+<div class="min-vh-100 d-flex flex-column justify-content-between bg-light">
+  <div class="topbar">
+    <a
+      class="btn btn-outline-light btn-sm"
+      href="https://www.uleam.edu.ec/"
+      target="_blank"
+    >
+      Sitio de la ULEAM
+    </a>
+  </div>
+
+  <div class="login-container d-flex justify-content-center">
+    <form
+      [formGroup]="recuperarForm"
+      (ngSubmit)="onSubmit()"
+      class="login-box bg-white p-4 rounded shadow"
+      style="max-width: 400px; width: 100%"
+    >
+      <div class="text-center mb-4">
+        <img
+          src="/assets/images/LOGO.png"
+          alt="Logo ULEAM"
+          class="img-fluid"
+          style="max-height: 100px"
+        />
+      </div>
+
+      <h2 class="mb-4 text-center">Recuperar contraseña</h2>
+
+      <div class="mb-3">
+        <input
+          type="text"
+          formControlName="usuario"
+          placeholder="Ingrese su usuario"
+          class="form-control"
+          [class.is-invalid]="
+            recuperarForm.get('usuario')?.invalid &&
+            recuperarForm.get('usuario')?.touched
+          "
+        />
+      </div>
+
+      <div class="mb-3">
+        <input
+          type="text"
+          formControlName="cedula"
+          placeholder="Ingrese su cédula"
+          class="form-control"
+          [class.is-invalid]="
+            recuperarForm.get('cedula')?.invalid &&
+            recuperarForm.get('cedula')?.touched
+          "
+        />
+      </div>
+
+      <div class="mb-3">
+        <input
+          type="password"
+          formControlName="nuevaContrasena"
+          placeholder="Nueva contraseña"
+          class="form-control"
+          [class.is-invalid]="
+            recuperarForm.get('nuevaContrasena')?.invalid &&
+            recuperarForm.get('nuevaContrasena')?.touched
+          "
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mb-3">
+        Actualizar contraseña
+      </button>
+
+      <div class="text-center mt-3">
+        Si la recordaste...
+        <a routerLink="/auth/login">Inicia sesión aquí</a>
+      </div>
+
+      <p [ngClass]="mensajeColor" class="text-center mt-3">
+        {{ mensaje }}
+      </p>
+    </form>
+  </div>
+</div>

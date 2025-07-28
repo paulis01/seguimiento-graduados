@@ -1,0 +1,206 @@
+<div class="min-vh-100 d-flex flex-column justify-content-between bg-light">
+  <div class="topbar">
+    <a
+      class="btn btn-outline-light btn-sm"
+      href="https://www.uleam.edu.ec/"
+      target="_blank"
+    >
+      Sitio de la ULEAM
+    </a>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-4">
+          <form [formGroup]="registroForm" (ngSubmit)="onSubmit()">
+            <div class="text-center mb-4">
+              <img
+                src="/assets/images/LOGO.png"
+                alt="Logo ULEAM"
+                style="max-height: 100px"
+              />
+              <h5 class="mt-3">Universidad Laica Eloy Alfaro de Manabí</h5>
+            </div>
+
+            <!-- Nombre -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nombre"
+                placeholder="Nombres y apellidos"
+                [class.is-invalid]="
+                  registroForm.get('nombre')?.touched &&
+                  registroForm.get('nombre')?.invalid
+                "
+                required
+              />
+              <div class="invalid-feedback">Este campo es obligatorio.</div>
+            </div>
+
+            <!-- Usuario -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="usuario"
+                placeholder="Usuario"
+                required
+              />
+            </div>
+
+            <!-- Cédula -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="cedula"
+                placeholder="Cédula de identidad"
+                [class.is-invalid]="
+                  registroForm.get('cedula')?.touched &&
+                  registroForm.get('cedula')?.invalid
+                "
+                required
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="registroForm.get('cedula')?.errors?.['pattern']"
+              >
+                Debe tener exactamente 10 dígitos numéricos.
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="fechaNacimiento" class="form-label"
+                >Fecha de nacimiento</label
+              >
+              <input
+                type="date"
+                id="fechaNacimiento"
+                class="form-control"
+                formControlName="fecha_nacimiento"
+                required
+              />
+            </div>
+
+            <!-- Carrera -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="carrera"
+                placeholder="Carrera"
+                required
+              />
+            </div>
+
+            <!-- Dirección -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="direccion"
+                placeholder="Dirección"
+              />
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="telefono"
+                placeholder="Teléfono"
+                [class.is-invalid]="
+                  registroForm.get('telefono')?.touched &&
+                  registroForm.get('telefono')?.invalid
+                "
+                required
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="registroForm.get('telefono')?.errors?.['required']"
+              >
+                Este campo es obligatorio.
+              </div>
+              <div
+                class="invalid-feedback"
+                *ngIf="registroForm.get('telefono')?.errors?.['pattern']"
+              >
+                Debe tener exactamente 10 dígitos numéricos.
+              </div>
+            </div>
+
+            <!-- Correo -->
+            <div class="mb-3">
+              <input
+                type="email"
+                class="form-control"
+                formControlName="correo"
+                placeholder="Correo electrónico"
+                [class.is-invalid]="
+                  registroForm.get('correo')?.touched &&
+                  registroForm.get('correo')?.invalid
+                "
+                required
+              />
+              <div
+                class="invalid-feedback"
+                *ngIf="registroForm.get('correo')?.errors?.['email']"
+              >
+                Debe ser un correo válido.
+              </div>
+            </div>
+
+            <!-- Contraseña -->
+            <div class="mb-3">
+              <input
+                type="password"
+                class="form-control"
+                formControlName="contrasena"
+                placeholder="Contraseña"
+                required
+              />
+            </div>
+
+            <!-- Confirmar contraseña -->
+            <div class="mb-3">
+              <input
+                type="password"
+                class="form-control"
+                formControlName="confirmar_contrasena"
+                placeholder="Confirmar contraseña"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="fechaGraduacion" class="form-label"
+                >Fecha de graduación</label
+              >
+              <input
+                type="date"
+                id="fechaGraduacion"
+                class="form-control"
+                formControlName="fecha_graduacion"
+                required
+              />
+            </div>
+
+            <!-- Botón -->
+            <button type="submit" class="btn btn-primary w-100">
+              Registrarse
+            </button>
+
+            <!-- Link -->
+            <div class="text-center mt-3">
+              ¿Ya tienes cuenta?
+              <a routerLink="/auth/login">Inicia sesión aquí</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

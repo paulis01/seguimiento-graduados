@@ -1,0 +1,38 @@
+<div class="d-flex flex-column min-vh-100 bg-light">
+  <!-- Topbar -->
+  <header class="bg-success text-white py-2 shadow-sm">
+    <div class="container d-flex justify-content-start">
+      <a class="btn btn-outline-light btn-sm" [routerLink]="['/usuario/inicio']">← Volver al Inicio</a>
+    </div>
+  </header>
+
+  <!-- Contenido principal -->
+  <main class="container my-5 flex-grow-1">
+    <div *ngIf="encuesta; else noEncuesta">
+      <h1 class="mb-3 text-success">{{ encuesta.titulo }}</h1>
+      <p class="mb-4 text-muted">{{ encuesta.descripcion }}</p>
+
+      <form [formGroup]="respuestaForm" (ngSubmit)="onSubmit()" class="card shadow-sm p-4">
+        <div class="mb-3">
+          <label for="respuesta" class="form-label fw-bold">Tu respuesta:</label>
+          <textarea
+            id="respuesta"
+            formControlName="respuesta"
+            class="form-control"
+            rows="5"
+            required
+          ></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar Respuesta</button>
+      </form>
+    </div>
+
+    <ng-template #noEncuesta>
+      <div class="alert alert-warning mt-4" role="alert">
+        No hay encuestas disponibles en este momento.
+      </div>
+    </ng-template>
+  </main>
+
+</div>

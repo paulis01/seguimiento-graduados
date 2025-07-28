@@ -1,0 +1,335 @@
+<div class="d-flex flex-column min-vh-100 bg-light">
+  <header class="bg-success text-white py-2 shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a
+        class="btn btn-outline-light btn-sm"
+        href="https://www.uleam.edu.ec/"
+        target="_blank"
+      >
+        Sitio de la ULEAM
+      </a>
+      <div class="d-flex gap-2">
+        <a class="btn btn-light btn-sm" [routerLink]="['/usuario/perfil']"
+          >Perfil</a
+        >
+        <button class="btn btn-outline-light btn-sm" (click)="cerrarSesion()">
+          Cerrar sesión
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="container my-4" *ngIf="usuario; else noUsuario">
+    <a class="btn btn-secondary mb-3" [routerLink]="['/usuario/inicio']"
+      >← Inicio</a
+    >
+
+    <div class="row g-4">
+      <!-- FOTO -->
+      <div class="col-md-4 text-center">
+        <img
+          class="img-fluid rounded-circle border"
+          style="max-width: 200px"
+          [src]="usuario.foto || '/assets/images/default-user.png'"
+          alt="Foto de perfil"
+        />
+      </div>
+
+      <!-- DATOS -->
+      <div class="col-md-8">
+        <h1 class="h3 mb-3">Mi perfil</h1>
+        <dl class="row">
+          <dt class="col-sm-4">Nombre:</dt>
+          <dd class="col-sm-8">{{ usuario.nombre }}</dd>
+
+          <dt class="col-sm-4">Usuario:</dt>
+          <dd class="col-sm-8">{{ usuario.usuario }}</dd>
+
+          <dt class="col-sm-4">Cédula:</dt>
+          <dd class="col-sm-8">{{ usuario.cedula }}</dd>
+
+          <dt class="col-sm-4">Fecha nacimiento:</dt>
+          <dd class="col-sm-8">{{ usuario.fecha_nacimiento }}</dd>
+
+          <dt class="col-sm-4">Carrera:</dt>
+          <dd class="col-sm-8">{{ usuario.carrera }}</dd>
+
+          <dt class="col-sm-4">Fecha de Graduación:</dt>
+          <dd class="col-sm-8">{{ usuario.fecha_graduacion }}</dd>
+
+          <dt class="col-sm-4">Dirección:</dt>
+          <dd class="col-sm-8">{{ usuario.direccion || "No especificada" }}</dd>
+
+          <dt class="col-sm-4">Teléfono:</dt>
+          <dd class="col-sm-8">{{ usuario.telefono }}</dd>
+
+          <dt class="col-sm-4">Correo:</dt>
+          <dd class="col-sm-8">{{ usuario.correo }}</dd>
+
+          <dt class="col-sm-4">Estado laboral:</dt>
+          <dd class="col-sm-8">
+            {{ usuario.estado_laboral || "No especificado" }}
+          </dd>
+
+          <dt class="col-sm-4">Empresa:</dt>
+          <dd class="col-sm-8">{{ usuario.empresa || "-" }}</dd>
+
+          <dt class="col-sm-4">Cargo:</dt>
+          <dd class="col-sm-8">{{ usuario.cargo || "-" }}</dd>
+        </dl>
+
+        <!-- HISTORIAL -->
+        <h4 class="mt-4">Historial de trabajos</h4>
+        <ul
+          *ngIf="usuario.historial_trabajos?.length > 0; else sinHistorial"
+          class="list-group mb-3"
+        >
+          <li
+            *ngFor="let trabajo of usuario.historial_trabajos"
+            class="list-group-item"
+          >
+            {{ trabajo.empresa }} - {{ trabajo.cargo }} ({{
+              trabajo.fecha_inicio
+            }}
+            a {{ trabajo.fecha_fin || "actual" }})
+          </li>
+        </ul>
+        <ng-template #sinHistorial>
+          <p class="text-muted">No se han registrado trabajos anteriores.</p>
+        </ng-template>
+
+        <!-- BOTÓN EDITAR -->
+        <div *ngIf="!editando" class="mb-3">
+          <button class="btn btn-primary" (click)="activarEdicion()">
+            Editar perfil
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FORMULARIO EDICIÓN -->
+    <form
+      *ngIf="editando"
+      (ngSubmit)="guardarCambios()"
+      class="mt-4 needs-validation"
+      novalidate
+    >
+      <!-- FOTO -->
+      <div class="mb-3">
+        <label for="fotoPerfil" class="form-label">Foto de perfil</label>
+        <input
+          id="fotoPerfil"
+          type="file"
+          class="form-control"
+          (change)="onFotoSeleccionada($event)"
+        />
+        <img
+          *ngIf="form.foto"
+          [src]="form.foto"
+          alt="Vista previa"
+          class="img-thumbnail mt-2"
+          style="max-width: 150px"
+        />
+      </div>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="nombreInput" class="form-label">Nombre</label>
+          <input
+            id="nombreInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.nombre"
+            name="nombre"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="usuarioInput" class="form-label">Usuario</label>
+          <input
+            id="usuarioInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.usuario"
+            name="usuario"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="cedulaInput" class="form-label">Cédula</label>
+          <input
+            id="cedulaInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.cedula"
+            name="cedula"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="fechaNacimientoInput" class="form-label"
+            >Fecha nacimiento</label
+          >
+          <input
+            id="fechaNacimientoInput"
+            type="date"
+            class="form-control"
+            [(ngModel)]="form.fecha_nacimiento"
+            name="fecha_nacimiento"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="carreraInput" class="form-label">Carrera</label>
+          <input
+            id="carreraInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.carrera"
+            name="carrera"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="direccionInput" class="form-label">Dirección</label>
+          <input
+            id="direccionInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.direccion"
+            name="direccion"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="telefonoInput" class="form-label">Teléfono</label>
+          <input
+            id="telefonoInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.telefono"
+            name="telefono"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="correoInput" class="form-label">Correo</label>
+          <input
+            id="correoInput"
+            type="email"
+            class="form-control"
+            [(ngModel)]="form.correo"
+            name="correo"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="estadoLaboralInput" class="form-label"
+            >Estado laboral</label
+          >
+          <select
+            id="estadoLaboralInput"
+            class="form-select"
+            [(ngModel)]="form.estado_laboral"
+            name="estado_laboral"
+          >
+            <option value="empleo">Empleo</option>
+            <option value="desempleo">Desempleo</option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label for="empresaInput" class="form-label">Empresa</label>
+          <input
+            id="empresaInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.empresa"
+            name="empresa"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label for="cargoInput" class="form-label">Cargo</label>
+          <input
+            id="cargoInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.cargo"
+            name="cargo"
+          />
+        </div>
+      </div>
+
+      <!-- NUEVO TRABAJO -->
+      <h5 class="mt-4">Agregar trabajo anterior</h5>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label for="nuevaEmpresaInput" class="form-label">Empresa</label>
+          <input
+            id="nuevaEmpresaInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.nuevoTrabajo.empresa"
+            name="nuevaEmpresa"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="nuevoCargoInput" class="form-label">Cargo</label>
+          <input
+            id="nuevoCargoInput"
+            type="text"
+            class="form-control"
+            [(ngModel)]="form.nuevoTrabajo.cargo"
+            name="nuevoCargo"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="nuevoInicioInput" class="form-label">Fecha inicio</label>
+          <input
+            id="nuevoInicioInput"
+            type="month"
+            class="form-control"
+            [(ngModel)]="form.nuevoTrabajo.fecha_inicio"
+            name="nuevoInicio"
+          />
+        </div>
+        <div class="col-md-6">
+          <label for="nuevoFinInput" class="form-label">Fecha fin</label>
+          <input
+            id="nuevoFinInput"
+            type="month"
+            class="form-control"
+            [(ngModel)]="form.nuevoTrabajo.fecha_fin"
+            name="nuevoFin"
+          />
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="btn btn-secondary mt-3"
+        (click)="agregarTrabajoAnterior()"
+      >
+        Guardar trabajo anterior
+      </button>
+
+      <ul class="list-group my-3">
+        <li
+          *ngFor="let trabajo of form.historial_trabajos"
+          class="list-group-item"
+        >
+          {{ trabajo.empresa }} - {{ trabajo.cargo }} ({{
+            trabajo.fecha_inicio
+          }}
+          a {{ trabajo.fecha_fin || "actual" }})
+        </li>
+      </ul>
+
+      <button type="submit" class="btn btn-success">Guardar cambios</button>
+    </form>
+  </div>
+
+  <ng-template #noUsuario>
+    <div class="container my-5">
+      <p class="text-center text-muted fs-5">
+        No hay información disponible del usuario.
+      </p>
+    </div>
+  </ng-template>
+</div>
